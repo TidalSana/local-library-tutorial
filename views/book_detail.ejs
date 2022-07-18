@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title><%- title %></title>
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+      integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+      crossorigin="anonymous"
+    ></script>
+    <link href="/stylesheets/style.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-2"><%- include("./layout.ejs") %></div>
+        <div class="col-sm-10">
+          <h1><%= book.title %></h1>
+          <p>
+            <b>Author: </b>
+            <a href="<%= book.author.url %>"><%= book.author.name %></a>
+          </p>
+          <p><b>Summary: </b><%= book.summary %></p>
+          <p><b>ISBN: </b><%= book.isbn %></p>
+          <p>
+            <b>Genre:</b>
+            <% book.genre.forEach((val, index) => { %>
+            <a href="<%= val.url %>"><%= val.name %></a>
+            <% if (index < book.genre.length - 1) { %>, <% } %> <% })%>
+          </p>
+          <div style="margin-left: 20px; margin-top: 20px">
+            <h4>Copies</h4>
+            <% if (book_instances < 1 ) { %>
+            <p>There are no copies of this book in the library.</p>
+            <% } %> <% book_instances.forEach((value)=> { %>
+            <hr />
+            <% if (value.status == "Available") { %>
+            <p class="text-success"><%= value.status%></p>
+            <% } else if (value.status == "Maintenance") { %>
+            <p class="text-danger"><%= value.status %></p>
+            <% } else { %>
+            <p class="text-warning"><%= value.status %></p>
+            <% } %>
+            <p><b>Imprint: </b><%= value.imprint %></p>
+            <% if (value.status != "Available") { %>
+            <p><b>Due back:</b> <%= value.due_back %></p>
+            <% } %>
+            <p><b>Id: </b> <a href="<%= value.url %>"><%= value._id %></a></p>
+            <% }); %>
+          </div>
+          <hr />
+          <p><a href="<%= book.url %>/update">Update book</a></p>
+          <p><a href="<%= book.url %>/delete">Delete book</a></p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
