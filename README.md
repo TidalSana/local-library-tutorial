@@ -1,8 +1,8 @@
-# local-library-tutorial
+# local-library-tutorial :books: :books: :books:
 
-[Check out this project here](https://google.com/)
+[Check out this project here](https://mighty-gorge-78022.herokuapp.com/catalog)
 
-![](https://i.imgur.com/VLR9wEG.gif)
+![](https://i.imgur.com/vELniPh.gif)
 
 ## Summary
 
