@@ -1,6 +1,7 @@
 var mongoose = require("mongoose");
-var Schema = mongoose.Schema;
 const { DateTime } = require("luxon");
+
+var Schema = mongoose.Schema;
 
 var AuthorSchema = new Schema({
   first_name: { type: String, required: true, maxLength: 100 },
@@ -25,35 +26,44 @@ AuthorSchema.virtual("name").get(function () {
 
 // Virtual for author's lifespan
 AuthorSchema.virtual("lifespan").get(function () {
-  var lifetime_string = "";
+  let lifetime_string = "";
   if (this.date_of_birth) {
-    lifetime_string = DateTime.fromJSDate(this.date_of_birth).toLocaleString(
-      DateTime.DATE_MED
-    );
-  } else {
-    return (lifetime_string = "N/A");
+    lifetime_string = DateTime.fromJSDate(this.date_of_birth).year;
+    lifetime_string += " - ";
   }
   if (this.date_of_death) {
-    lifetime_string +=
-      " - " +
-      DateTime.fromJSDate(this.date_of_death).toLocaleString(DateTime.DATE_MED);
-  } else {
-    lifetime_string += " - " + "present";
+    lifetime_string += DateTime.fromJSDate(this.date_of_death).year;
+  }
+
+  if (this.date_of_birth && !this.date_of_death) {
+    lifetime_string += "present";
   }
   return lifetime_string;
 });
 
 // Virtual for author's date of birth
-AuthorSchema.virtual("date_of_birth_formatted").get(function () {
+AuthorSchema.virtual("dob_formatted").get(function () {
   return this.date_of_birth
     ? DateTime.fromJSDate(this.date_of_birth).toLocaleString(DateTime.DATE_MED)
     : "";
 });
 
 //Virtual for author's date of death
-AuthorSchema.virtual("date_of_death_formatted").get(function () {
+AuthorSchema.virtual("dod_formatted").get(function () {
   return this.date_of_death
     ? DateTime.fromJSDate(this.date_of_death).toLocaleString(DateTime.DATE_MED)
+    : "";
+});
+
+AuthorSchema.virtual("dob_form").get(function () {
+  return this.date_of_birth
+    ? DateTime.fromJSDate(this.date_of_birth).toISODate()
+    : "";
+});
+
+AuthorSchema.virtual("dod_form").get(function () {
+  return this.date_of_death
+    ? DateTime.fromJSDate(this.date_of_death).toISODate()
     : "";
 });
 

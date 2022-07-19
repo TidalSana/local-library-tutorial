@@ -28,19 +28,28 @@
         <div class="col-sm-2"><%- include("./layout.ejs") %></div>
         <div class="col-sm-10">
           <h1>Genre: <%= genre.name %></h1>
-          <div style="margin-left: 20px; margin-top: 20px">
-            <h4>Books</h4>
-            <dl>
-              <% if (genre_books < 1) { %>
-              <p>This genre has no books</p>
-              <% } %> <% genre_books.forEach((book) => { %>
-              <dt><a href="<%= book.url %>"><%=book.title %></a></dt>
-              <dd><%= book.summary %></dd>
-              <% }) %>
-            </dl>
-          </div>
-          <hr />
-          <p><a href="<%= genre.url %>/delete">Delete genre</a></p>
+          <% if (genre_books.length > 0 ) { %>
+          <p>Please delete the following books before deleting the genre.</p>
+          <ul class="card-list large-cards">
+            <% genre_books.forEach((book) => { %>
+            <li class="card">
+              <a href="<%=book.url%>"><%= book.title %></a>
+              <p><%= book.summary %></p>
+            </li>
+            <% }) %>
+          </ul>
+          <% } else { %>
+          <p>Are you sure you want delete this?</p>
+          <form method="post" action="">
+            <input
+              type="hidden"
+              name="genreid"
+              id="genreid"
+              value="<%= genre._id %>"
+            />
+            <button type="submit" class="btn btn-secondary">Delete</button>
+          </form>
+          <% } %>
         </div>
       </div>
     </div>

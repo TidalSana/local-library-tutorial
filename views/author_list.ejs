@@ -34,7 +34,8 @@
             <%} %> <% author_list.forEach(function (author) { %>
             <li>
               <a href="<%= author.url %>"><%= author.name %></a>
-              (<%- author.lifespan %>)
+              <% if (!author.date_of_birth && !author.date_of_death) { %> (N/A)
+              <% } else { %> (<%- author.lifespan %>) <% } %>
             </li>
             <% }) %>
           </ul>
